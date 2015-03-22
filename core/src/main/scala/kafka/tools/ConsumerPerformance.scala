@@ -145,12 +145,12 @@ object ConsumerPerformance {
       .withRequiredArg
       .describedAs("topic")
       .ofType(classOf[String])
-    val groupIdOpt = parser.accepts("group", "The group id to consume on.")
+    val groupIdOpt = parser.accepts("group", "Consumer group.")
       .withRequiredArg
       .describedAs("gid")
       .defaultsTo("perf-consumer-" + new Random().nextInt(100000))
       .ofType(classOf[String])
-    val fetchSizeOpt = parser.accepts("fetch-size", "The amount of data to fetch in a single request.")
+    val fetchSizeOpt = parser.accepts("fetch-size", "The fetch size of each request.")
       .withRequiredArg
       .describedAs("size")
       .ofType(classOf[java.lang.Integer])
@@ -175,6 +175,10 @@ object ConsumerPerformance {
     val useNewConsumerOpt = parser.accepts("new-consumer", "Use the new consumer implementation.")
 
     val options = parser.parse(args: _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
 
     CommandLineUtils.checkRequiredArgs(parser, options, topicOpt)
    

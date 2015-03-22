@@ -245,10 +245,10 @@ object TopicCommand {
                            .ofType(classOf[String])
     val listOpt = parser.accepts("list", "List all available topics.")
     val createOpt = parser.accepts("create", "Create a new topic.")
-    val deleteOpt = parser.accepts("delete", "Delete a topic")
+    val deleteOpt = parser.accepts("delete", "Delete a topic.")
     val alterOpt = parser.accepts("alter", "Alter the configuration for the topic.")
     val describeOpt = parser.accepts("describe", "List details for the given topics.")
-    val helpOpt = parser.accepts("help", "Print usage information.")
+    val helpOpt = parser.accepts("help", "Print this message.")
     val topicOpt = parser.accepts("topic", "The topic to be create, alter or describe. Can also accept a regular " +
                                            "expression except for --create option")
                          .withRequiredArg

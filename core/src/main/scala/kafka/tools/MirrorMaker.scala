@@ -78,20 +78,20 @@ object MirrorMaker extends Logging with KafkaMetricsGroup {
     info("Starting mirror maker")
     val parser = new OptionParser
 
-    val consumerConfigOpt = parser.accepts("consumer.config",
-      "Embedded consumer config for consuming from the source cluster.")
+    val consumerConfigOpt = parser.accepts("consumer-config",
+      "REQUIRED: Embedded consumer config for consuming from the source cluster.")
       .withRequiredArg()
       .describedAs("config file")
       .ofType(classOf[String])
 
-    val producerConfigOpt = parser.accepts("producer.config",
-      "Embedded producer config.")
+    val producerConfigOpt = parser.accepts("producer-config",
+      "REQUIRED: Embedded producer config.")
       .withRequiredArg()
       .describedAs("config file")
       .ofType(classOf[String])
 
-    val numStreamsOpt = parser.accepts("num.streams",
-      "Number of consumption streams.")
+    val numStreamsOpt = parser.accepts("num-streams",
+      "Number of consumer streams.")
       .withRequiredArg()
       .describedAs("Number of threads")
       .ofType(classOf[java.lang.Integer])

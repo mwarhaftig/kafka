@@ -86,57 +86,57 @@ public class KafkaMigrationTool
   public static void main(String[] args) throws InterruptedException, IOException {
     OptionParser parser = new OptionParser();
     ArgumentAcceptingOptionSpec<String> consumerConfigOpt
-      = parser.accepts("consumer.config", "Kafka 0.7 consumer config to consume from the source 0.7 cluster. " + "You man specify multiple of these.")
+      = parser.accepts("consumer-config", "REQUIRED: Kafka 0.7 consumer config to consume from the source 0.7 cluster. " + "You man specify multiple of these.")
       .withRequiredArg()
       .describedAs("config file")
       .ofType(String.class);
 
     ArgumentAcceptingOptionSpec<String> producerConfigOpt
-      =  parser.accepts("producer.config", "Producer config.")
+      =  parser.accepts("producer-config", "REQUIRED: Producer config.")
       .withRequiredArg()
       .describedAs("config file")
       .ofType(String.class);
 
     ArgumentAcceptingOptionSpec<Integer> numProducersOpt
-      =  parser.accepts("num.producers", "Number of producer instances")
+      =  parser.accepts("num-producers", "Number of producer instances.")
       .withRequiredArg()
       .describedAs("Number of producers")
       .ofType(Integer.class)
       .defaultsTo(1);
 
     ArgumentAcceptingOptionSpec<String> zkClient01JarOpt
-      = parser.accepts("zkclient.01.jar", "zkClient 0.1 jar file")
+      = parser.accepts("zkclient.01.jar", "REQUIRED: zkClient 0.1 jar file.")
       .withRequiredArg()
       .describedAs("zkClient 0.1 jar file required by Kafka 0.7")
       .ofType(String.class);
 
     ArgumentAcceptingOptionSpec<String> kafka07JarOpt
-      = parser.accepts("kafka.07.jar", "Kafka 0.7 jar file")
+      = parser.accepts("kafka.07.jar", "REQUIRED: Kafka 0.7 jar file.")
       .withRequiredArg()
       .describedAs("kafka 0.7 jar")
       .ofType(String.class);
 
     ArgumentAcceptingOptionSpec<Integer> numStreamsOpt
-      = parser.accepts("num.streams", "Number of consumer streams")
+      = parser.accepts("num-streams", "Number of consumer streams.")
       .withRequiredArg()
       .describedAs("Number of consumer threads")
       .ofType(Integer.class)
       .defaultsTo(1);
 
     ArgumentAcceptingOptionSpec<String> whitelistOpt
-      = parser.accepts("whitelist", "Whitelist of topics to migrate from the 0.7 cluster")
+      = parser.accepts("whitelist", "Whitelist of topics to migrate from the 0.7 cluster.")
       .withRequiredArg()
       .describedAs("Java regex (String)")
       .ofType(String.class);
 
     ArgumentAcceptingOptionSpec<String> blacklistOpt
-      = parser.accepts("blacklist", "Blacklist of topics to migrate from the 0.7 cluster")
+      = parser.accepts("blacklist", "Blacklist of topics to migrate from the 0.7 cluster.")
       .withRequiredArg()
       .describedAs("Java regex (String)")
       .ofType(String.class);
 
     ArgumentAcceptingOptionSpec<Integer> queueSizeOpt
-      =  parser.accepts("queue.size", "Number of messages that are buffered between the 0.7 consumer and 0.8 producer")
+      =  parser.accepts("queue-size", "Number of messages that are buffered between the 0.7 consumer and 0.8 producer.")
       .withRequiredArg()
       .describedAs("Queue size in terms of number of messages")
       .ofType(Integer.class)

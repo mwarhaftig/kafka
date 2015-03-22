@@ -30,9 +30,9 @@ object DumpLogSegments {
 
   def main(args: Array[String]) {
     val parser = new OptionParser
-    val printOpt = parser.accepts("print-data-log", "if set, printing the messages content when dumping data logs")
-    val verifyOpt = parser.accepts("verify-index-only", "if set, just verify the index log without printing its content")
-    val filesOpt = parser.accepts("files", "REQUIRED: The comma separated list of data and index log files to be dumped")
+    val printOpt = parser.accepts("print-data-log", "If set, printing the messages content when dumping data logs.")
+    val verifyOpt = parser.accepts("verify-index-only", "If set, just verify the index log without printing its content.")
+    val filesOpt = parser.accepts("files", "REQUIRED: The comma separated list of data and index log files to be dumped.")
                            .withRequiredArg
                            .describedAs("file1, file2, ...")
                            .ofType(classOf[String])
@@ -41,12 +41,12 @@ object DumpLogSegments {
                                   .describedAs("size")
                                   .ofType(classOf[java.lang.Integer])
                                   .defaultsTo(5 * 1024 * 1024)
-    val deepIterationOpt = parser.accepts("deep-iteration", "if set, uses deep instead of shallow iteration")
-    val valueDecoderOpt = parser.accepts("value-decoder-class", "if set, used to deserialize the messages. This class should implement kafka.serializer.Decoder trait. Custom jar should be available in kafka/libs directory.")
+    val deepIterationOpt = parser.accepts("deep-iteration", "If set, uses deep instead of shallow iteration.")
+    val valueDecoderOpt = parser.accepts("value-decoder-class", "If set, used to deserialize the messages. This class should implement kafka.serializer.Decoder trait. Custom jar should be available in kafka/libs directory.")
                                .withOptionalArg()
                                .ofType(classOf[java.lang.String])
                                .defaultsTo("kafka.serializer.StringDecoder")
-    val keyDecoderOpt = parser.accepts("key-decoder-class", "if set, used to deserialize the keys. This class should implement kafka.serializer.Decoder trait. Custom jar should be available in kafka/libs directory.")
+    val keyDecoderOpt = parser.accepts("key-decoder-class", "If set, used to deserialize the keys. This class should implement kafka.serializer.Decoder trait. Custom jar should be available in kafka/libs directory.")
                                .withOptionalArg()
                                .ofType(classOf[java.lang.String])
                                .defaultsTo("kafka.serializer.StringDecoder")

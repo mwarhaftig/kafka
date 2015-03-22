@@ -46,12 +46,12 @@ object JmxTool extends Logging {
         .withRequiredArg
         .describedAs("name")
         .ofType(classOf[String])
-    val reportingIntervalOpt = parser.accepts("reporting-interval", "Interval in MS with which to poll jmx stats.")
+    val reportingIntervalOpt = parser.accepts("reporting-interval", "Interval at which to print progress info.")
       .withRequiredArg
       .describedAs("ms")
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(2000)
-    val helpOpt = parser.accepts("help", "Print usage information.")
+    val helpOpt = parser.accepts("help", "Print this message.")
     val dateFormatOpt = parser.accepts("date-format", "The date format to use for formatting the time field. " +
       "See java.text.SimpleDateFormat for options.")
       .withRequiredArg

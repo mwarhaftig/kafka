@@ -77,7 +77,7 @@ object ReplicaVerificationTool extends Logging {
                          .describedAs("ms")
                          .ofType(classOf[java.lang.Integer])
                          .defaultsTo(1000)
-    val topicWhiteListOpt = parser.accepts("topic-white-list", "White list of topics to verify replica consistency. Defaults to all topics.")
+    val topicWhiteListOpt = parser.accepts("whitelist", "White list of topics to verify replica consistency. Defaults to all topics.")
                          .withRequiredArg
                          .describedAs("Java regex (String)")
                          .ofType(classOf[String])
@@ -87,16 +87,22 @@ object ReplicaVerificationTool extends Logging {
                            .describedAs("timestamp/-1(latest)/-2(earliest)")
                            .ofType(classOf[java.lang.Long])
                            .defaultsTo(-1L)
-    val reportIntervalOpt = parser.accepts("report-interval-ms", "The reporting interval.")
+    val reportIntervalOpt = parser.accepts("reporting-interval", "Interval at which to print progress info.")
                          .withRequiredArg
                          .describedAs("ms")
                          .ofType(classOf[java.lang.Long])
                          .defaultsTo(30 * 1000L)
+   val helpOpt = parser.accepts("help", "Print this message.")
                          
    if(args.length == 0)
       CommandLineUtils.printUsageAndDie(parser, "Validate that all replicas for a set of topics have the same data.")
 
     val options = parser.parse(args : _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
+
     CommandLineUtils.checkRequiredArgs(parser, options, brokerListOpt)
 
     val regex = options.valueOf(topicWhiteListOpt)

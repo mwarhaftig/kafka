@@ -44,11 +44,12 @@ object ImportZkOffsets extends Logging {
   def main(args: Array[String]) {
     val parser = new OptionParser
     
-    val zkConnectOpt = parser.accepts("zkconnect", "ZooKeeper connect string.")
+    val zkConnectOpt = parser.accepts("zookeeper", "The connection string for the zookeeper connection in the form host:port. " +
+      "Multiple URLS can be given to allow fail-over.")
                             .withRequiredArg()
                             .defaultsTo("localhost:2181")
                             .ofType(classOf[String])
-    val inFileOpt = parser.accepts("input-file", "Input file")
+    val inFileOpt = parser.accepts("input-file", "REQUIRED: Input file.")
                             .withRequiredArg()
                             .ofType(classOf[String])
     parser.accepts("help", "Print this message.")

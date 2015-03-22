@@ -44,7 +44,7 @@ object SimpleConsumerShell extends Logging {
                            .withRequiredArg
                            .describedAs("topic")
                            .ofType(classOf[String])
-    val partitionIdOpt = parser.accepts("partition", "The partition to consume from.")
+    val partitionIdOpt = parser.accepts("partition", "REQUIRED: The topic partition to consume from.")
                            .withRequiredArg
                            .describedAs("partition")
                            .ofType(classOf[java.lang.Integer])
@@ -54,7 +54,7 @@ object SimpleConsumerShell extends Logging {
                            .describedAs("replica id")
                            .ofType(classOf[java.lang.Integer])
                            .defaultsTo(UseLeaderReplica)
-    val offsetOpt = parser.accepts("offset", "The offset id to consume from, default to -2 which means from beginning; while value -1 means from end")
+    val offsetOpt = parser.accepts("offset", "The offset id to consume from, default to -2 which means from beginning; while value -1 means from end.")
                            .withRequiredArg
                            .describedAs("consume offset")
                            .ofType(classOf[java.lang.Long])
@@ -64,7 +64,7 @@ object SimpleConsumerShell extends Logging {
                            .describedAs("clientId")
                            .ofType(classOf[String])
                            .defaultsTo("SimpleConsumerShell")
-    val fetchSizeOpt = parser.accepts("fetchsize", "The fetch size of each request.")
+    val fetchSizeOpt = parser.accepts("fetch-size", "The fetch size of each request.")
                            .withRequiredArg
                            .describedAs("fetchsize")
                            .ofType(classOf[java.lang.Integer])
@@ -74,17 +74,17 @@ object SimpleConsumerShell extends Logging {
                            .describedAs("class")
                            .ofType(classOf[String])
                            .defaultsTo(classOf[DefaultMessageFormatter].getName)
-    val messageFormatterArgOpt = parser.accepts("property")
+    val messageFormatterArgOpt = parser.accepts("property", "A mechanism to pass user-defined properties in the form key=value to the message formatter.")
                            .withRequiredArg
                            .describedAs("prop")
                            .ofType(classOf[String])
-    val printOffsetOpt = parser.accepts("print-offsets", "Print the offsets returned by the iterator")
+    val printOffsetOpt = parser.accepts("print-offsets", "Print the offsets returned by the iterator.")
     val maxWaitMsOpt = parser.accepts("max-wait-ms", "The max amount of time each fetch request waits.")
                            .withRequiredArg
                            .describedAs("ms")
                            .ofType(classOf[java.lang.Integer])
                            .defaultsTo(1000)
-    val maxMessagesOpt = parser.accepts("max-messages", "The number of messages to consume")
+    val maxMessagesOpt = parser.accepts("max-messages", "The number of messages to consume.")
                            .withRequiredArg
                            .describedAs("max-messages")
                            .ofType(classOf[java.lang.Integer])
@@ -93,11 +93,17 @@ object SimpleConsumerShell extends Logging {
         "skip it instead of halt.")
     val noWaitAtEndOfLogOpt = parser.accepts("no-wait-at-logend",
         "If set, when the simple consumer reaches the end of the Log, it will stop, not waiting for new produced messages")
+    val helpOpt = parser.accepts("help", "Print this message.")
         
     if(args.length == 0)
       CommandLineUtils.printUsageAndDie(parser, "A low-level tool for fetching data directly from a particular replica.")
 
     val options = parser.parse(args : _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
+
     CommandLineUtils.checkRequiredArgs(parser, options, brokerListOpt, topicOpt, partitionIdOpt)
 
     val topic = options.valueOf(topicOpt)

@@ -44,14 +44,15 @@ object ExportZkOffsets extends Logging {
   def main(args: Array[String]) {
     val parser = new OptionParser
 
-    val zkConnectOpt = parser.accepts("zkconnect", "ZooKeeper connect string.")
+    val zkConnectOpt = parser.accepts("zookeeper", "The connection string for the zookeeper connection in the form host:port. " +
+      "Multiple URLS can be given to allow fail-over.")
                             .withRequiredArg()
                             .defaultsTo("localhost:2181")
                             .ofType(classOf[String])
     val groupOpt = parser.accepts("group", "Consumer group.")
                             .withRequiredArg()
                             .ofType(classOf[String])
-    val outFileOpt = parser.accepts("output-file", "Output file")
+    val outFileOpt = parser.accepts("output-file", "REQUIRED: Output file.")
                             .withRequiredArg()
                             .ofType(classOf[String])
     parser.accepts("help", "Print this message.")

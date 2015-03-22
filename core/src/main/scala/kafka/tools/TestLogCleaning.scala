@@ -47,7 +47,7 @@ object TestLogCleaning {
 
   def main(args: Array[String]) {
     val parser = new OptionParser
-    val numMessagesOpt = parser.accepts("messages", "The number of messages to send or consume.")
+    val numMessagesOpt = parser.accepts("messages", "REQUIRED: The number of messages to send or consume.")
                                .withRequiredArg
                                .describedAs("count")
                                .ofType(classOf[java.lang.Long])
@@ -57,7 +57,7 @@ object TestLogCleaning {
                            .describedAs("count")
                            .ofType(classOf[java.lang.Integer])
                            .defaultsTo(5)
-    val brokerOpt = parser.accepts("broker", "Url to connect to.")
+    val brokerOpt = parser.accepts("broker", "REQUIRED: Url to connect to.")
                           .withRequiredArg
                           .describedAs("url")
                           .ofType(classOf[String])
@@ -71,7 +71,8 @@ object TestLogCleaning {
     		                      .describedAs("percent")
     		                      .ofType(classOf[java.lang.Integer])
     		                      .defaultsTo(0)
-    val zkConnectOpt = parser.accepts("zk", "Zk url.")
+    val zkConnectOpt = parser.accepts("zookeeper", "REQUIRED: The connection string for the zookeeper connection in the form host:port. " +
+      "Multiple URLS can be given to allow fail-over.")
                              .withRequiredArg
                              .describedAs("url")
                              .ofType(classOf[String])

@@ -40,12 +40,17 @@ object PreferredReplicaLeaderElectionCommand extends Logging {
       .withRequiredArg
       .describedAs("urls")
       .ofType(classOf[String])
+    val helpOpt = parser.accepts("help", "Print this message.")
       
     if(args.length == 0)
       CommandLineUtils.printUsageAndDie(parser, "This tool causes leadership for each partition to be transferred back to the 'preferred replica'," + 
                                                 " it can be used to balance leadership among the servers.")
 
     val options = parser.parse(args : _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
 
     CommandLineUtils.checkRequiredArgs(parser, options, zkConnectOpt)
 

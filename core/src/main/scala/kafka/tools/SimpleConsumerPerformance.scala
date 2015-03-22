@@ -128,7 +128,7 @@ object SimpleConsumerPerformance {
                            .describedAs("partition")
                            .ofType(classOf[java.lang.Integer])
                            .defaultsTo(0)
-    val fetchSizeOpt = parser.accepts("fetch-size", "REQUIRED: The fetch size to use for consumption.")
+    val fetchSizeOpt = parser.accepts("fetch-size", "REQUIRED: The fetch size of each request.")
                            .withRequiredArg
                            .describedAs("bytes")
                            .ofType(classOf[java.lang.Integer])
@@ -140,6 +140,10 @@ object SimpleConsumerPerformance {
                            .defaultsTo("SimpleConsumerPerformanceClient")
 
     val options = parser.parse(args : _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
 
     CommandLineUtils.checkRequiredArgs(parser, options, topicOpt, urlOpt)
 

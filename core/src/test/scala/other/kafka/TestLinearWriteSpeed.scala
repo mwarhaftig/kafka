@@ -57,7 +57,7 @@ object TestLinearWriteSpeed {
                            .describedAs("num_files")
                            .ofType(classOf[java.lang.Integer])
                            .defaultsTo(1)
-   val reportingIntervalOpt = parser.accepts("reporting-interval", "The number of ms between updates.")
+   val reportingIntervalOpt = parser.accepts("reporting-interval", "Interval at which to print progress info.")
                            .withRequiredArg
                            .describedAs("ms")
                            .ofType(classOf[java.lang.Long])
@@ -67,12 +67,13 @@ object TestLinearWriteSpeed {
                            .describedAs("mb")
                            .ofType(classOf[java.lang.Integer])
                            .defaultsTo(Integer.MAX_VALUE)
-   val flushIntervalOpt = parser.accepts("flush-interval", "The number of messages between flushes")
+   val flushIntervalOpt = parser.accepts("flush-interval", "The number of messages between flushes.")
                            .withRequiredArg()
                            .describedAs("message_count")
                            .ofType(classOf[java.lang.Long])
                            .defaultsTo(Long.MaxValue)
-   val compressionCodecOpt = parser.accepts("compression", "The compression codec to use")
+   val compressionCodecOpt = parser.accepts("compression-codec", "The compression codec: either 'none', 'gzip', 'snappy', or 'lz4'." +
+                                                                  "If specified without value, then it defaults to 'none'")
                             .withRequiredArg
                             .describedAs("codec")
                             .ofType(classOf[java.lang.String])

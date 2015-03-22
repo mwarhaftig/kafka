@@ -70,15 +70,15 @@ object ReplayLogProducer extends Logging {
       .describedAs("zookeeper url")
       .ofType(classOf[String])
       .defaultsTo("127.0.0.1:2181")
-    val brokerListOpt = parser.accepts("broker-list", "REQUIRED: the broker list must be specified.")
+    val brokerListOpt = parser.accepts("broker-list", "REQUIRED: The list of hostname and port of the server to connect to.")
       .withRequiredArg
       .describedAs("hostname:port")
       .ofType(classOf[String])
-    val inputTopicOpt = parser.accepts("inputtopic", "REQUIRED: The topic to consume from.")
+    val inputTopicOpt = parser.accepts("input-topic", "REQUIRED: The topic to consume from.")
       .withRequiredArg
       .describedAs("input-topic")
       .ofType(classOf[String])
-    val outputTopicOpt = parser.accepts("outputtopic", "REQUIRED: The topic to produce to")
+    val outputTopicOpt = parser.accepts("output-topic", "REQUIRED: The topic to produce to.")
       .withRequiredArg
       .describedAs("output-topic")
       .ofType(classOf[String])
@@ -103,8 +103,13 @@ object ReplayLogProducer extends Logging {
       .describedAs("producer properties")
       .ofType(classOf[String])
     val syncOpt = parser.accepts("sync", "If set message send requests to the brokers are synchronously, one at a time as they arrive.")
+    val helpOpt = parser.accepts("help", "Print this message.")
 
     val options = parser.parse(args : _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
     
     CommandLineUtils.checkRequiredArgs(parser, options, brokerListOpt, inputTopicOpt)
 

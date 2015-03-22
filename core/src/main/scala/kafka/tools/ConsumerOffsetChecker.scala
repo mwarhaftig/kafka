@@ -109,19 +109,21 @@ object ConsumerOffsetChecker extends Logging {
   def main(args: Array[String]) {
     val parser = new OptionParser()
 
-    val zkConnectOpt = parser.accepts("zookeeper", "ZooKeeper connect string.").
+    val zkConnectOpt = parser.accepts("zookeeper", "REQUIRED: The connection string for the zookeeper connection in the form host:port. " +
+            "Multiple URLS can be given to allow fail-over.").
             withRequiredArg().defaultsTo("localhost:2181").ofType(classOf[String])
     val topicsOpt = parser.accepts("topic",
             "Comma-separated list of consumer topics (all topics if absent).").
             withRequiredArg().ofType(classOf[String])
-    val groupOpt = parser.accepts("group", "Consumer group.").
+    val groupOpt = parser.accepts("group", "REQUIRED: Consumer group.").
             withRequiredArg().ofType(classOf[String])
-    val channelSocketTimeoutMsOpt = parser.accepts("socket.timeout.ms", "Socket timeout to use when querying for offsets.").
+    val channelSocketTimeoutMsOpt = parser.accepts("socket-timeout-ms", "Socket timeout to use when querying for offsets.").
             withRequiredArg().ofType(classOf[java.lang.Integer]).defaultsTo(6000)
-    val channelRetryBackoffMsOpt = parser.accepts("retry.backoff.ms", "Retry back-off to use for failed offset queries.").
+    val channelRetryBackoffMsOpt = parser.accepts("retry-backoff-ms", "Before each retry, the producer refreshes the metadata of relevant topics. " +
+            "Since leader election takes a bit of time, this property specifies the amount of time that the producer waits before refreshing the metadata.").
             withRequiredArg().ofType(classOf[java.lang.Integer]).defaultsTo(3000)
 
-    parser.accepts("broker-info", "Print broker info")
+    parser.accepts("broker-info", "Print broker info.")
     parser.accepts("help", "Print this message.")
     
     if(args.length == 0)

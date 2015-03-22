@@ -38,16 +38,16 @@ object GetOffsetShell {
                            .withRequiredArg
                            .describedAs("topic")
                            .ofType(classOf[String])
-    val partitionOpt = parser.accepts("partitions", "comma separated list of partition ids. If not specified, it will find offsets for all partitions")
+    val partitionOpt = parser.accepts("partitions", "Comma separated list of partition ids. If not specified, it will find offsets for all partitions.")
                            .withRequiredArg
                            .describedAs("partition ids")
                            .ofType(classOf[String])
                            .defaultsTo("")
-    val timeOpt = parser.accepts("time", "timestamp of the offsets before that")
+    val timeOpt = parser.accepts("time", "Timestamp for getting the initial offsets.")
                            .withRequiredArg
                            .describedAs("timestamp/-1(latest)/-2(earliest)")
                            .ofType(classOf[java.lang.Long])
-    val nOffsetsOpt = parser.accepts("offsets", "number of offsets returned")
+    val nOffsetsOpt = parser.accepts("offsets", "Number of offsets returned.")
                            .withRequiredArg
                            .describedAs("count")
                            .ofType(classOf[java.lang.Integer])

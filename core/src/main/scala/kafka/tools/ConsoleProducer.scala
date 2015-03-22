@@ -131,7 +131,7 @@ object ConsoleProducer {
       .withRequiredArg
       .describedAs("topic")
       .ofType(classOf[String])
-    val brokerListOpt = parser.accepts("broker-list", "REQUIRED: The broker list string in the form HOST1:PORT1,HOST2:PORT2.")
+    val brokerListOpt = parser.accepts("broker-list", "REQUIRED: The list of hostname and port of the server to connect to.")
       .withRequiredArg
       .describedAs("broker-list")
       .ofType(classOf[String])
@@ -166,17 +166,18 @@ object ConsoleProducer {
       .describedAs("queue_size")
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(10000)
-    val queueEnqueueTimeoutMsOpt = parser.accepts("queue-enqueuetimeout-ms", "Timeout for event enqueue")
+    val queueEnqueueTimeoutMsOpt = parser.accepts("queue-enqueuetimeout-ms", "Timeout for event enqueue.")
       .withRequiredArg
       .describedAs("queue enqueuetimeout ms")
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(Int.MaxValue)
-    val requestRequiredAcksOpt = parser.accepts("request-required-acks", "The required acks of the producer requests")
+    val requestRequiredAcksOpt = parser.accepts("request-required-acks", "Number of acks required for producer request " +
+      "to complete")
       .withRequiredArg
       .describedAs("request required acks")
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(0)
-    val requestTimeoutMsOpt = parser.accepts("request-timeout-ms", "The ack timeout of the producer requests. Value must be non-negative and non-zero")
+    val requestTimeoutMsOpt = parser.accepts("request-timeout-ms", "The ack timeout of the producer requests. Value must be non-negative and non-zero.")
       .withRequiredArg
       .describedAs("request timeout ms")
       .ofType(classOf[java.lang.Integer])
@@ -237,8 +238,14 @@ object ConsoleProducer {
             .describedAs("producer_prop")
             .ofType(classOf[String])
     val useNewProducerOpt = parser.accepts("new-producer", "Use the new producer implementation.")
+    val helpOpt = parser.accepts("help", "Print this message.")
 
     val options = parser.parse(args : _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
+
     if(args.length == 0)
       CommandLineUtils.printUsageAndDie(parser, "Read data from standard input and publish it to Kafka.")
     CommandLineUtils.checkRequiredArgs(parser, options, topicOpt, brokerListOpt)

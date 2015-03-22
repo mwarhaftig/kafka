@@ -37,7 +37,7 @@ object ConsoleConsumer extends Logging {
 
   def main(args: Array[String]) {
     val parser = new OptionParser
-    val topicIdOpt = parser.accepts("topic", "The topic id to consume on.")
+    val topicIdOpt = parser.accepts("topic", "The topic id to consume from.")
             .withRequiredArg
             .describedAs("topic")
             .ofType(classOf[String])
@@ -55,7 +55,7 @@ object ConsoleConsumer extends Logging {
             .describedAs("urls")
             .ofType(classOf[String])
 
-    val consumerConfigOpt = parser.accepts("consumer.config", "Consumer config properties file.")
+    val consumerConfigOpt = parser.accepts("consumer-config", "Consumer config properties file.")
             .withRequiredArg
             .describedAs("config file")
             .ofType(classOf[String])
@@ -64,11 +64,11 @@ object ConsoleConsumer extends Logging {
             .describedAs("class")
             .ofType(classOf[String])
             .defaultsTo(classOf[DefaultMessageFormatter].getName)
-    val messageFormatterArgOpt = parser.accepts("property")
+    val messageFormatterArgOpt = parser.accepts("property",  "A mechanism to pass user-defined properties in the form key=value to the message formatter.")
             .withRequiredArg
             .describedAs("prop")
             .ofType(classOf[String])
-    val deleteConsumerOffsetsOpt = parser.accepts("delete-consumer-offsets", "If specified, the consumer path in zookeeper is deleted when starting up");
+    val deleteConsumerOffsetsOpt = parser.accepts("delete-consumer-offsets", "If specified, the consumer path in zookeeper is deleted when starting up.");
     val resetBeginningOpt = parser.accepts("from-beginning", "If the consumer does not already have an established offset to consume from, " +
             "start with the earliest message present in the log rather than the latest message.")
     val maxMessagesOpt = parser.accepts("max-messages", "The maximum number of messages to consume before exiting. If not set, consumption is continual.")
@@ -77,18 +77,23 @@ object ConsoleConsumer extends Logging {
             .ofType(classOf[java.lang.Integer])
     val skipMessageOnErrorOpt = parser.accepts("skip-message-on-error", "If there is an error when processing a message, " +
             "skip it instead of halt.")
-    val csvMetricsReporterEnabledOpt = parser.accepts("csv-reporter-enabled", "If set, the CSV metrics reporter will be enabled")
+    val csvMetricsReporterEnabledOpt = parser.accepts("csv-reporter-enabled", "If set, the CSV metrics reporter will be enabled.")
     val metricsDirectoryOpt = parser.accepts("metrics-dir", "If csv-reporter-enable is set, and this parameter is" +
             "set, the csv metrics will be outputed here")
       .withRequiredArg
       .describedAs("metrics dictory")
       .ofType(classOf[java.lang.String])
+    val helpOpt = parser.accepts("help", "Print this message.")
 
     if(args.length == 0)
       CommandLineUtils.printUsageAndDie(parser, "The console consumer is a tool that reads data from Kafka and outputs it to standard output.")
       
     var groupIdPassed = true
     val options: OptionSet = tryParse(parser, args)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
     CommandLineUtils.checkRequiredArgs(parser, options, zkConnectOpt)
     val topicOrFilterOpt = List(topicIdOpt, whitelistOpt, blacklistOpt).filter(options.has)
     if (topicOrFilterOpt.size != 1)

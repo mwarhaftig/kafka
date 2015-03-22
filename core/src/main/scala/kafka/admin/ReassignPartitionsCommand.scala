@@ -177,7 +177,7 @@ object ReassignPartitionsCommand extends Logging {
       " Note that this only generates a candidate assignment, it does not execute it.")
     val executeOpt = parser.accepts("execute", "Kick off the reassignment as specified by the --reassignment-json-file option.")
     val verifyOpt = parser.accepts("verify", "Verify if the reassignment completed as specified by the --reassignment-json-file option.")
-    val reassignmentJsonFileOpt = parser.accepts("reassignment-json-file", "The JSON file with the partition reassignment configuration" +
+    val reassignmentJsonFileOpt = parser.accepts("reassignment-json-file", "The JSON file with the partition reassignment configuration. " +
                       "The format to use is - \n" +
                       "{\"partitions\":\n\t[{\"topic\": \"foo\",\n\t  \"partition\": 1,\n\t  \"replicas\": [1,2,3] }],\n\"version\":1\n}")
                       .withRequiredArg
@@ -194,11 +194,16 @@ object ReassignPartitionsCommand extends Logging {
                       .withRequiredArg
                       .describedAs("brokerlist")
                       .ofType(classOf[String])
+    val helpOpt = parser.accepts("help", "Print this message.")
                       
     if(args.length == 0)
       CommandLineUtils.printUsageAndDie(parser, "This command moves topic partitions between replicas.")
 
     val options = parser.parse(args : _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
   }
 }
 

@@ -179,7 +179,8 @@ object TestOffsetManager {
 
   def main(args: Array[String]) {
     val parser = new OptionParser
-    val zookeeperOpt = parser.accepts("zookeeper", "The ZooKeeper connection URL.")
+    val zookeeperOpt = parser.accepts("zookeeper", "The connection string for the zookeeper connection in the form host:port. " +
+      "Multiple URLS can be given to allow fail-over.")
       .withRequiredArg
       .describedAs("ZooKeeper URL")
       .ofType(classOf[java.lang.String])
@@ -203,13 +204,13 @@ object TestOffsetManager {
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(1)
 
-    val numThreadsOpt = parser.accepts("thread-count", "Number of commit threads.")
+    val numThreadsOpt = parser.accepts("threads", "Number of commit threads.")
       .withRequiredArg
       .describedAs("threads")
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(1)
 
-    val reportingIntervalOpt = parser.accepts("reporting-interval-ms", "Interval at which stats are reported.")
+    val reportingIntervalOpt = parser.accepts("reporting-interval", "Interval at which to print progress info.")
       .withRequiredArg
       .describedAs("interval (ms)")
       .ofType(classOf[java.lang.Integer])

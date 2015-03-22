@@ -57,35 +57,35 @@ object StateChangeLogMerger extends Logging {
 
     // Parse input arguments.
     val parser = new OptionParser
-    val filesOpt = parser.accepts("logs", "Comma separated list of state change logs or a regex for the log file names")
+    val filesOpt = parser.accepts("logs", "Comma separated list of state change logs or a regex for the log file names.")
                               .withRequiredArg
                               .describedAs("file1,file2,...")
                               .ofType(classOf[String])
-    val regexOpt = parser.accepts("logs-regex", "Regex to match the state change log files to be merged")
+    val regexOpt = parser.accepts("logs-regex", "Regex to match the state change log files to be merged.")
                               .withRequiredArg
                               .describedAs("for example: /tmp/state-change.log*")
                               .ofType(classOf[String])
-    val topicOpt = parser.accepts("topic", "The topic whose state change logs should be merged")
+    val topicOpt = parser.accepts("topic", "The topic whose state change logs should be merged.")
                               .withRequiredArg
                               .describedAs("topic")
                               .ofType(classOf[String])
-    val partitionsOpt = parser.accepts("partitions", "Comma separated list of partition ids whose state change logs should be merged")
+    val partitionsOpt = parser.accepts("partitions", "Comma separated list of partition ids whose state change logs should be merged.")
                               .withRequiredArg
                               .describedAs("0,1,2,...")
                               .ofType(classOf[String])
-    val startTimeOpt = parser.accepts("start-time", "The earliest timestamp of state change log entries to be merged")
+    val startTimeOpt = parser.accepts("start-time", "The earliest timestamp of state change log entries to be merged.")
                               .withRequiredArg
-                              .describedAs("start timestamp in the format " + dateFormat)
+                              .describedAs("start timestamp in the format " + dateFormat.toPattern())
                               .ofType(classOf[String])
                               .defaultsTo("0000-00-00 00:00:00,000")
-    val endTimeOpt = parser.accepts("end-time", "The latest timestamp of state change log entries to be merged")
+    val endTimeOpt = parser.accepts("end-time", "The latest timestamp of state change log entries to be merged.")
                               .withRequiredArg
-                              .describedAs("end timestamp in the format " + dateFormat)
+                              .describedAs("end timestamp in the format " + dateFormat.toPattern())
                               .ofType(classOf[String])
                               .defaultsTo("9999-12-31 23:59:59,999")
                               
     if(args.length == 0)
-      CommandLineUtils.printUsageAndDie(parser, "A tool for merging the log files from several brokers to reconnstruct a unified history of what happened.")
+      CommandLineUtils.printUsageAndDie(parser, "A tool for merging the log files from several brokers to reconstruct a unified history of what happened.")
 
 
     val options = parser.parse(args : _*)

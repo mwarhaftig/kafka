@@ -70,28 +70,28 @@ object ProducerPerformance extends Logging {
   }
 
   class ProducerPerfConfig(args: Array[String]) extends PerfConfig(args) {
-    val brokerListOpt = parser.accepts("broker-list", "REQUIRED: broker info (the list of broker host and port for bootstrap.")
+    val brokerListOpt = parser.accepts("broker-list", "REQUIRED: The list of hostname and port of the server to connect to.")
       .withRequiredArg
       .describedAs("hostname:port,..,hostname:port")
       .ofType(classOf[String])
-    val topicsOpt = parser.accepts("topics", "REQUIRED: The comma separated list of topics to produce to")
+    val topicsOpt = parser.accepts("topics", "REQUIRED: The comma separated list of topics to produce to.")
       .withRequiredArg
       .describedAs("topic1,topic2..")
       .ofType(classOf[String])
-    val producerRequestTimeoutMsOpt = parser.accepts("request-timeout-ms", "The produce request timeout in ms")
+    val producerRequestTimeoutMsOpt = parser.accepts("request-timeout-ms", "The ack timeout of the producer requests. Value must be non-negative and non-zero.")
       .withRequiredArg()
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(3000)
-    val producerNumRetriesOpt = parser.accepts("producer-num-retries", "The producer retries number")
+    val producerNumRetriesOpt = parser.accepts("producer-num-retries", "The producer retries number.")
       .withRequiredArg()
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(3)
-    val producerRetryBackOffMsOpt = parser.accepts("producer-retry-backoff-ms", "The producer retry backoff time in milliseconds")
+    val producerRetryBackOffMsOpt = parser.accepts("producer-retry-backoff-ms", "The producer retry backoff time in milliseconds.")
       .withRequiredArg()
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(100)
-    val producerRequestRequiredAcksOpt = parser.accepts("request-num-acks", "Number of acks required for producer request " +
-      "to complete")
+    val producerRequestRequiredAcksOpt = parser.accepts("request-required-acks", "Number of acks required for producer request " +
+      "to complete.")
       .withRequiredArg()
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(-1)
@@ -108,20 +108,24 @@ object ProducerPerformance extends Logging {
       .withRequiredArg()
       .describedAs("initial message id")
       .ofType(classOf[java.lang.Integer])
-    val messageSendGapMsOpt = parser.accepts("message-send-gap-ms", "If set, the send thread will wait for specified time between two sends")
+    val messageSendGapMsOpt = parser.accepts("message-send-gap-ms", "If set, the send thread will wait for specified time between two sends.")
       .withRequiredArg()
       .describedAs("message send time gap")
       .ofType(classOf[java.lang.Integer])
       .defaultsTo(0)
-    val csvMetricsReporterEnabledOpt = parser.accepts("csv-reporter-enabled", "If set, the CSV metrics reporter will be enabled")
+    val csvMetricsReporterEnabledOpt = parser.accepts("csv-reporter-enabled", "If set, the CSV metrics reporter will be enabled.")
     val metricsDirectoryOpt = parser.accepts("metrics-dir", "If csv-reporter-enable is set, and this parameter is" +
-      "set, the csv metrics will be outputed here")
+      "set, the csv metrics will be outputed here.")
       .withRequiredArg
       .describedAs("metrics dictory")
       .ofType(classOf[java.lang.String])
     val useNewProducerOpt = parser.accepts("new-producer", "Use the new producer implementation.")
 
     val options = parser.parse(args: _*)
+    if (options.has("help")) {
+      parser.printHelpOn(System.out)
+      System.exit(0)
+    }
     CommandLineUtils.checkRequiredArgs(parser, options, topicsOpt, brokerListOpt, numMessagesOpt)
 
     val topicsStr = options.valueOf(topicsOpt)
